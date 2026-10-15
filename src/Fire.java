@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Fire {
     /**
      * Returns how long it takes for all vulnerable trees to be set on fire if a
@@ -38,8 +40,64 @@ public class Fire {
     public static int timeToBurn(char[][] forest, int matchR, int matchC) {
         // HINT: when adding to your BFS queue, you can include more information than
         // just a location. What other information might be useful?
+        
+        Queue<Point> queue = new LinkedList<>();
+        HashSet<Point> visited = new HashSet<>();
+        int[][] dirs  = new int[][]{
+            {-1,0}, //up
+            {1,0}, //down
+            {0,-1}, //left
+            {0,1}, //right
+        };
+        int answer = 0;
+        Point start = new Point(matchR, matchC, 0);
+
+        queue.offer(start);
+
+        while(!queue.isEmpty()){
+
+            Point cur = queue.remove();
+            visited.add(cur);
+            
+            for(int[] d : dirs){
+                if( cur.row() + d[0] >= 0 &&
+                    cur.row() + d[0] < forest.length &&
+                    cur.col() + d[1] >= 0 &&
+                    cur.col() + d[1] < forest[0].length )
+                {
+                    Point curN = new Point(cur.row() + d[0], cur.col() + d[1], cur.depth() + 1);
+                    if(visited.contains(curN)){
+                        continue;
+                    }
+                    if(forest[curN.row()][curN.col()] == '.'){
+                        continue;
+                    }
+                    queue.add(curN);
+                }
+            }
+            
+            answer = Math.max(cur.depth(), answer);
+        }
+
 
         // Implement this AND add more tests!!!
-        return -1;
+        return answer;
     }
+
+    public static void main(String[] args){
+
+        char[][] forest = {
+            {'t','.','.','t','t','t','t','.','t'},
+            {'.','.','t','t','.','.','.','.','t'},
+            {'.','.','t','t','t','t','t','t','t'},
+            {'t','t','t','t','.','.','.','.','.'}
+        };
+
+        int matchR = 2;
+        int matchC = 6;
+
+        System.out.println(timeToBurn(forest,matchR,matchC));
+    }
+    
+    public record Point(int row, int col, int depth){};
 }
