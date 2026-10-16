@@ -24,7 +24,10 @@ public class FireTest {
     @Test
     public void test_starting_point_is_not_tree() {
         char[][] forest = {
-
+            {'.','.','.','t','t','t','t','.','t'},
+            {'.','.','t','t','.','.','.','.','t'},
+            {'.','.','t','t','t','t','t','t','t'},
+            {'t','t','t','t','.','.','.','.','.'}
         };
 
         int matchR = 0;
@@ -58,7 +61,7 @@ public class FireTest {
             {'t'},
             {'t'},
             {'t'},
-            {'t'},
+            {'t'}
         };
 
         int matchR = 0;
@@ -72,7 +75,7 @@ public class FireTest {
     @Test
     public void test_1_row() {
         char[][] forest = {
-            {'t'},{'t'},{'t'},{'t'},
+            {'t','t','t','t'},
         };
 
         int matchR = 0;
@@ -87,16 +90,16 @@ public class FireTest {
     public void test_strange_shape_graph() {
         char[][] forest = {
             {'t'},{'t'},{'t'},{'t'},
+            {'t'},{'t'},
+            {'t'},{'t'},{'t'},
             {'t'},
-            {'t'},
-            {'t'},
-            {'t'},
+            {'t'},{'t'},{'t'},
         };
 
         int matchR = 0;
         int matchC = 0;
 
-        int expected = 7;
+        int expected = 12;
         int actual = Fire.timeToBurn(forest, matchR, matchC);
 
         assertEquals(expected, actual);
