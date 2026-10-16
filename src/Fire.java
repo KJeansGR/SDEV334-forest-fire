@@ -49,39 +49,45 @@ public class Fire {
             {0,-1}, //left
             {0,1}, //right
         };
-        int answer = 0;
-        Point start = new Point(matchR, matchC, 0);
 
-        queue.offer(start);
+        Point start = new Point(matchR, matchC);
+
+        queue.add(start);
+        visited.add(start);
+
+        int depth=0;
 
         while(!queue.isEmpty()){
 
-            Point cur = queue.remove();
-            visited.add(cur);
-            
-            for(int[] d : dirs){
-                if( cur.row() + d[0] >= 0 &&
-                    cur.row() + d[0] < forest.length &&
-                    cur.col() + d[1] >= 0 &&
-                    cur.col() + d[1] < forest[0].length )
-                {
-                    Point curN = new Point(cur.row() + d[0], cur.col() + d[1], cur.depth() + 1);
-                    if(visited.contains(curN)){
-                        continue;
+            int level = queue.size(); // cool algorithim since it is BFS ques every neighbor added represents all nodes at that depth and this lets the following loop know how many points to process before incrementing the "Depth" for the next level.
+
+            for(int i = 0; i< level; i++){
+
+                Point cur = queue.remove();
+
+
+                for(int[] d : dirs){
+                    if( cur.row() + d[0] >= 0 &&
+                        cur.row() + d[0] < forest.length &&
+                        cur.col() + d[1] >= 0 &&
+                        cur.col() + d[1] < forest[0].length )
+                    {
+
+                        Point curN = new Point(cur.row() + d[0], cur.col() + d[1]);
+    
+                        if(forest[curN.row()][curN.col()] == '.'){
+                            continue;
+                        }
+                        if(visited.add(curN)){
+                            queue.add(curN);
+                        }
                     }
-                    if(forest[curN.row()][curN.col()] == '.'){
-                        continue;
-                    }
-                    queue.add(curN);
                 }
             }
-            
-            answer = Math.max(cur.depth(), answer);
+            depth +=1; // increment depth now that the previous level has been processed and the current que represents the next level
         }
 
-
-        // Implement this AND add more tests!!!
-        return answer;
+        return depth - 1;
     }
 
     public static void main(String[] args){
@@ -99,5 +105,5 @@ public class Fire {
         System.out.println(timeToBurn(forest,matchR,matchC));
     }
     
-    public record Point(int row, int col, int depth){};
+    public record Point(int row, int col){};
 }
