@@ -120,4 +120,19 @@ public class FireTest {
 
         assertEquals(expected, actual);
     }
+    @Test
+    public void test_Zig_Zag_Tree_Path() {
+        char[][] forest = {
+            {'t', '.', 't', 't','t',},
+            {'t', '.', 't', '.','t',},
+            {'t', '.', 't', '.','t',},
+            {'t', '.', 't', '.','t',},
+            {'t', '.', 't', '.','t',},
+            {'t', 't', 't', '.','t',},
+        };
+
+        int actual = Fire.timeToBurn(forest, 0, 0);
+
+        assertEquals(19, actual);
+    }
 }
